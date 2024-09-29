@@ -3,7 +3,7 @@ from calc_layout import *
 class Calc():
     def __init__(self, *args):
         self.point = 0
-        self.actions = False
+        self.action = False
         self.actions = ["+", "-", "/", "*"]
 
     def push_1(self):
@@ -58,15 +58,73 @@ class Calc():
             result.setText(result.text() + ".")
             self.point = 1
         elif self.point == 1 and self.action:
-            result.setText(result.text()+ ".")
+            if result.text()[-1] in self.actions: 
+                result.setText(result.text() + "0.")
+            else:
+                result.setText(result.text() + ".")
             self.point = 2
 
     def push_plus(self):
         if not self.action:
-            result.setText(result.text() + "+")
+            if result.text()[-1] == ".":
+                result.setText(result.text()[:-1] + "+") 
+            else:
+                result.setText(result.text() + "+")
             self.actions = True
+            self.point = 1
         elif result.text() [-1] in self.actions:
             result.setText(result.text()[:-1] + "+")
+
+
+    def push_minus(self):
+        if not self.action:
+            if result.text()[-1] == "-":
+                result.setText(result.text()[:-1] + "-") 
+            else:
+                result.setText(result.text() + "-")
+            self.actions = True
+            self.point = 1
+        elif result.text() [-1] in self.actions:
+            result.setText(result.text()[:-1] + "-")
+
+
+    def push_division(self):
+        if not self.action:
+            if result.text()[-1] == "/":
+                result.setText(result.text()[:-1] + "/") 
+            else:
+                result.setText(result.text() + "/")
+            self.actions = True
+            self.point = 1
+        elif result.text() [-1] in self.actions:
+            result.setText(result.text()[:-1] + "/")
+
+
+    def push_multiply(self):
+        if not self.action:
+            if result.text()[-1] == "*":
+                result.setText(result.text()[:-1] + "*") 
+            else:
+                result.setText(result.text() + "*")
+            self.actions = True
+            self.point = 1
+        elif result.text() [-1] in self.actions:
+            result.setText(result.text()[:-1] + "*")
+
+    def push_clear(self):
+        result.setText("0")
+        self.action = False
+        self.point = 0
+
+    def push_backspace(self):
+        if result.text()[-1] == ".":
+            self.point -= 1
+        if result.text()[-1] in self.actions:
+            self.action = False
+        result.setText(result.text()[:1])
+        if len(result.text()) == 0:
+            result.setText("0")
+
 
 
 calc = Calc()
@@ -83,7 +141,14 @@ b_9.clicked.connect(calc.push_9)
 
 
 b_point.clicked.connect(calc.push_point)
-b_point.clicked.connect(calc.push_1)
+b_plus.clicked.connect(calc.push_plus)
+b_minus.clicked.connect(calc.push_minus)
+b_division.clicked.connect(calc.push_division)
+b_multiply.clicked.connect(calc.push_multiply)
+b_clear.clicked.connect(calc.push_clear)
+b_backspace.clicked.connect(calc.push_backspace)
+
+
 
 
 
